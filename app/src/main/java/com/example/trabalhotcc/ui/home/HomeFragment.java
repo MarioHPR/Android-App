@@ -1,5 +1,7 @@
 package com.example.trabalhotcc.ui.home;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,5 +33,14 @@ public class HomeFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        SharedPreferences sessao = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
+        int id = sessao.getInt("idLogado",-1);
+
     }
 }

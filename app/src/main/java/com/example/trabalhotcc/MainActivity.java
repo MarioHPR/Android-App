@@ -2,7 +2,9 @@ package com.example.trabalhotcc;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +38,14 @@ public class MainActivity extends AppCompatActivity {
 
         login = findViewById(R.id.user);
         senha = findViewById(R.id.senha);
+
+
+        SharedPreferences sessao = getSharedPreferences("config", Context.MODE_PRIVATE);
+        int id = sessao.getInt("idLogado",-1);
+        if(id > 0){
+            Intent i = new Intent(getBaseContext(), PrincipalActivity.class);
+            startActivity(i);
+        }
     }
 
     public void logar(View v){
@@ -44,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         // Cria uma fila para envio de mensagens por Volley
         RequestQueue filaEnviadoraDeMensagens = Volley.newRequestQueue(this);
         //Dica: obter o IP abrir o terminal de comando cmd e escrever ipconfig. Procurar por IPv4
-        String urlServidor = "http://192.168.31.6:3000/login";
+        String urlServidor = "http://192.168.31.6:3000/login";// 192.168.0.108 em casa no if 31.6
 
         // parâmetros para enviar por POST usando um Map
                 final Map<String, String> parametrosPOST = new HashMap<>();
@@ -70,18 +80,25 @@ public class MainActivity extends AppCompatActivity {
                                         // cria u intent
                                         Intent i = new Intent(getBaseContext(), PrincipalActivity.class);
                                         i.putExtra("id",id);
+
+                                        SharedPreferences sessao = getSharedPreferences("config",MODE_PRIVATE);
+                                        SharedPreferences.Editor edit = sessao.edit();
+                                        edit.putInt("idLogado",id);
+                                        edit.apply();
+
                                         startActivity(i);
+                                        // exibe o resultado na tela usando Toast
+                                        Toast.makeText(
+                                                getBaseContext(),
+                                                "ID : " + id,
+                                                Toast.LENGTH_LONG).show();
                                     }
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
 
-                                // exibe o resultado na tela usando Toast
-                                Toast.makeText(
-                                        getBaseContext(),
-                                        "Resultado da soma: "+response,
-                                        Toast.LENGTH_LONG).show();
+
                             }
                         },
                         new Response.ErrorListener() { // 4 - Objeto para tratar erro
