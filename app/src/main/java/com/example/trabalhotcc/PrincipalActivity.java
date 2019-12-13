@@ -1,5 +1,6 @@
 package com.example.trabalhotcc;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -66,5 +67,13 @@ public class PrincipalActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        SharedPreferences sessao = getSharedPreferences("config", MODE_PRIVATE);
+        int id = sessao.getInt("idLogado",-1);
+
     }
 }

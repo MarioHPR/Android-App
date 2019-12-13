@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         // Cria uma fila para envio de mensagens por Volley
         RequestQueue filaEnviadoraDeMensagens = Volley.newRequestQueue(this);
         //Dica: obter o IP abrir o terminal de comando cmd e escrever ipconfig. Procurar por IPv4
-        String urlServidor = "http://192.168.31.6:3000/login";// 192.168.0.108 em casa no if 31.6
+        String urlServidor = "http://192.168.0.108:3000/login";// 192.168.0.108 em casa no if 31.6
 
         // parâmetros para enviar por POST usando um Map
                 final Map<String, String> parametrosPOST = new HashMap<>();
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onResponse(String response) {
                                 Log.d("DEBUG_LOGIN","RES: "+response);
                                 // {"id":7,"cpf":"1","nome":"w'","dataNascimento":"2001-01-01T02:00:00.000Z",
-                                //  "usuario":"1","senha":"1","id_contato":null,"id_local":null}
+                                //  "Usuario":"1","senha":"1","id_contato":null,"id_local":null}
                                 //
                                 try {
                                     JSONObject object = new JSONObject(response);
