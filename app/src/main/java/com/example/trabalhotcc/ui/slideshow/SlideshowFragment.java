@@ -29,7 +29,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.trabalhotcc.PrincipalActivity;
 import com.example.trabalhotcc.R;
+import com.example.trabalhotcc.instituicaoActivity;
 import com.example.trabalhotcc.modelo.Instituicao;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,11 +43,6 @@ import java.util.Map;
 import static android.content.Context.MODE_PRIVATE;
 
 public class SlideshowFragment extends Fragment {
-
-    // declara os Componentes para interagir com a tela
-    private Spinner spinnerPais;
-    // declara o adaptador
-    private ArrayAdapter<String> adaptadorSpinnerPais;
 
     private SlideshowViewModel slideshowViewModel;
 
@@ -59,74 +56,19 @@ public class SlideshowFragment extends Fragment {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
-                // vincula Componentes com Views da tela
-                spinnerPais = getActivity().findViewById(R.id.spinnerCidade);
-                // vincula o adaptador com o Spinner
-                spinnerPais.setAdapter(adaptadorSpinnerPais);
             }
         });
 
-
-        //instancia o adaptador
-        adaptadorSpinnerPais = new ArrayAdapter<>(
-                getActivity().getBaseContext(),                   // 1 - contexto
-                android.R.layout.simple_list_item_1 // 2 - modelo de linha (texto)
-        );
-
-        ///////////////////////////////////////////////////////////////////////
-        // Cria uma fila para envio de mensagens por Volley
-        RequestQueue filaEnviadoraDeMensagens = Volley.newRequestQueue(getActivity());
-        //Dica: obter o IP abrir o terminal de comando cmd e escrever ipconfig. Procurar por IPv4
-        String url = "http://192.168.0.108:3000/instituicao/?id=1";// 192.168.0.108 em casa no if 31.6
-
-        // parâmetros para enviar por POST usando um Map
-        final Map<String, String> parametrosPOST = new HashMap<>();
-        adaptadorSpinnerPais.add("Selecione  instituição");
-        // cria a requisição de mensagem e tratamento de resposta
-        JsonArrayRequest requisicao = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            for (int i = 0; i < response.length(); i++) {
-                                Instituicao c = new Instituicao();
-                                JSONObject o = (JSONObject) response.get(i);
-                                try {
-                                    c.setId(o.getInt("id"));
-                                    c.setNome(o.getString("nome"));
-                                    c.setId_local(o.getInt("id_local"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                adaptadorSpinnerPais.add(c.getNome());
-                            }
-
-                        } catch (org.json.JSONException e) {
-                            Log.d("TAG_EXEMPLO",
-                                    "Erro ao converter resultado do Json: " + response.toString());
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("TAG_EXEMPLO",
-                                "Erro encontrado ao tentar enviar mensagem", error);
-                    }
-                }
-        );
-        filaEnviadoraDeMensagens.add(requisicao);
-        ///////////////////////////////////////////////////////////////////////
-
-/*
-        // adicionar dados
-
-        adaptadorSpinnerPais.add("Brasil");
-        adaptadorSpinnerPais.add("Estados Unidos");
-        adaptadorSpinnerPais.add("Reino Unido");*/
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // cria um Intent para inclusão
+                Intent it = new Intent(getActivity().getBaseContext(), instituicaoActivity.class);
+                // inicia activity
+                startActivity(it);
+            }
+        });
         return root;
     }
 

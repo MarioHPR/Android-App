@@ -1,7 +1,23 @@
 package com.example.trabalhotcc.utils;
 
-public class AdaptadorGenerico {
-   /* private List<ModeloEscolhido> list;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.trabalhotcc.R;
+import com.example.trabalhotcc.modelo.Consulta;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class AdaptadorGenerico<ModeloEscolhido> extends RecyclerView.Adapter<LinhaExibidaGenerica> {
+    private List<ModeloEscolhido> list;
     private Context activityAtual;
 
     // escutador de clicks do item
@@ -45,7 +61,7 @@ public class AdaptadorGenerico {
     public void addAll(List<ModeloEscolhido> dados){
         list.addAll(dados);
     }
-    public void add(Cliente c){
+    public void add(Consulta c){
         list.add((ModeloEscolhido) c);
     }
 
@@ -55,5 +71,5 @@ public class AdaptadorGenerico {
 
     public ModeloEscolhido getItem(int posicaoSelecionada){
         return list.get(posicaoSelecionada);
-    }*/
+    }
 }
