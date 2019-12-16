@@ -137,8 +137,8 @@ public class ConsultaDAO {
         filaEnviadoraDeMensagens.add(requisicao);
     }
 
-    public void listarTodosPorFiltro(String texto, final AdaptadorGenerico<Consulta> adaptadorLista) {
-        String url = ProjetoUtils.ENDERECO_SERVIDOR + "consultas/?nome=" + texto;
+    public void listarTodosPorFiltro(final AdaptadorGenerico<Consulta> adaptadorLista) {
+        String url = ProjetoUtils.ENDERECO_SERVIDOR + "consultas/?id=1";
         JsonArrayRequest requisicao = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
