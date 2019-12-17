@@ -76,10 +76,10 @@ public class SlideshowFragment extends Fragment {
                 // pega o item selecionado
                 Consulta p = (Consulta) adaptadorLista.getItem(position);
                 // cria um Intent para Edição
-                //Intent it = new Intent(getActivity(), ActivityTeste.class);
+                Intent it = new Intent(getActivity(), instituicaoActivity.class);
                 // adiciona parâmetros para informar edição
-               // it.putExtra("idEdicao",p.getId());
-                //startActivity(it);
+                it.putExtra("idEdicao",p.getId());
+                startActivity(it);
             }
         });
 
