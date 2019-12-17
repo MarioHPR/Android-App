@@ -1,6 +1,8 @@
 package com.example.trabalhotcc.modelo;
 
-public class Consulta {
+import java.io.Serializable;
+
+public class Consulta implements Serializable {
     private int id;
     private String diagnostico;
     private String prescricao;

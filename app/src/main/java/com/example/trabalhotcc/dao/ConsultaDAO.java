@@ -147,13 +147,15 @@ public class ConsultaDAO {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
+
                             adaptadorLista.clear();
                             for (int i = 0; i < response.length(); i++) {
                                 Consulta c = new Consulta();
                                 JSONObject o = (JSONObject) response.get(i);
                                 try {
+                                    Log.d("AQUIIIII",""+o.getString("diagnostico"));
                                     c.setId(o.getInt("id"));
-                                    c.setDiagnostico(o.getString("diagnostioo"));
+                                    c.setDiagnostico(o.getString("diagnostico"));
                                     c.setPrescricao(o.getString("prescricao"));
                                     c.setNome_medico(o.getString("nome_medico"));
                                     c.setId_instituicao(o.getInt("id_instituicao"));
