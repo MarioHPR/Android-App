@@ -12,6 +12,6 @@ public class LinhaExibidaGenerica extends RecyclerView.ViewHolder  {
 
     public LinhaExibidaGenerica(View itemView) {
         super(itemView);
-        //textoExibido = itemView.findViewById(R.id.textoGenerico);
+        textoExibido = itemView.findViewById(R.id.textoGenerico);
     }
 }
