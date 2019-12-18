@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".consultaActivity"></activity>
+        <activity android:name=".instituicaoActivity"></activity>
+        <activity android:name=".consultaActivity" />
         <activity
             android:name=".PrincipalActivity"
             android:label="@string/title_activity_principal"

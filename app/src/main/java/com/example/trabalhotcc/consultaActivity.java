@@ -68,8 +68,8 @@ public class consultaActivity extends AppCompatActivity {
         editTextMedico      = findViewById(R.id.editTextMedico);
         editTextDiagnostico = findViewById(R.id.editTextDiagnostico);
         editTextPrescricao  = findViewById(R.id.editTextPrescricao);
-        btSalvar            = findViewById(R.id.buttonSalvar);
-        btExcluir           = findViewById(R.id.buttonExcluir);
+        btSalvar            = findViewById(R.id.btSalvar);
+        btExcluir           = findViewById(R.id.btExcluir);
         imageButton         = findViewById(R.id.imageButton);
 
 
@@ -157,12 +157,10 @@ public class consultaActivity extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(
-                        getBaseContext(),
-                        "O registro = "+idEdicao,
-                        Toast.LENGTH_SHORT
-                ).show();
-                // Se for inclusão não permite exclusão
+                // cria um Intent para inclusão
+                Intent it = new Intent(getBaseContext(), instituicaoActivity.class);
+                // inicia activity
+                startActivity(it);
             }
         });
 
