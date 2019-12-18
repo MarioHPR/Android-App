@@ -10,12 +10,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -23,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.trabalhotcc.R;
 import com.example.trabalhotcc.dao.ConsultaDAO;
-import com.example.trabalhotcc.instituicaoActivity;
+import com.example.trabalhotcc.consultaActivity;
 import com.example.trabalhotcc.modelo.Consulta;
 import com.example.trabalhotcc.utils.AdaptadorGenerico;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -76,7 +74,7 @@ public class SlideshowFragment extends Fragment {
                 // pega o item selecionado
                 Consulta p = (Consulta) adaptadorLista.getItem(position);
                 // cria um Intent para Edição
-                Intent it = new Intent(getActivity(), instituicaoActivity.class);
+                Intent it = new Intent(getActivity(), consultaActivity.class);
                 // adiciona parâmetros para informar edição
                 it.putExtra("idEdicao",p.getId());
                 startActivity(it);
@@ -93,7 +91,7 @@ public class SlideshowFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // cria um Intent para inclusão
-                Intent it = new Intent(getActivity().getBaseContext(), instituicaoActivity.class);
+                Intent it = new Intent(getActivity().getBaseContext(), consultaActivity.class);
                 // inicia activity
                 startActivity(it);
             }

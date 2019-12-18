@@ -3,6 +3,7 @@ package com.example.trabalhotcc.dao;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -41,7 +42,7 @@ public class ConsultaDAO {
     }
 
     public void buscarUm(int id, Response.Listener<JSONObject> listener) {
-        String url = ProjetoUtils.ENDERECO_SERVIDOR + "consultas/?id=" + id;
+        String url = ProjetoUtils.ENDERECO_SERVIDOR + "consultas/?busca=" + id+"&usu="+1;
         JsonObjectRequest requisicao = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -73,14 +74,14 @@ public class ConsultaDAO {
     }
 
     public void atualizar(Consulta con) throws JSONException {
-
-        String url = ProjetoUtils.ENDERECO_SERVIDOR + "consultas/edit/" + con.getId();
+        String url = ProjetoUtils.ENDERECO_SERVIDOR + "consultas/";
         JSONObject dados = new JSONObject();
         dados.put("diagnostico", con.getDiagnostico());
         dados.put("prescricao", con.getPrescricao());
         dados.put("nome_medico", con.getNome_medico());
         dados.put("id_instituicao", con.getId_instituicao());
-        dados.put("id_usuario", con.getId_usuario());
+        dados.put("id",con.getId());
+        dados.put("id_usuario", 1);
 
         JsonObjectRequest requisicao = new JsonObjectRequest(
                 Request.Method.PUT,
@@ -136,6 +137,7 @@ public class ConsultaDAO {
         );
         filaEnviadoraDeMensagens.add(requisicao);
     }
+
 
     public void listarTodosPorFiltro(final AdaptadorGenerico<Consulta> adaptadorLista) {
         String url = ProjetoUtils.ENDERECO_SERVIDOR + "consultas/?id=1";

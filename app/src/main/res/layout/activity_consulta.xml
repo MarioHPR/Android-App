@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".instituicaoActivity">
+    tools:context=".consultaActivity">
 
 
     <TextView
@@ -16,7 +16,8 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_slideshow" />
+        app:layout_constraintTop_toBottomOf="@+id/text_slideshow"
+        tools:ignore="UnknownId" />
 
     <EditText
         android:id="@+id/editTextMedico"
@@ -89,4 +90,22 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         app:srcCompat="@drawable/add_green"
         tools:ignore="VectorDrawableCompat" />
+
+    <Button
+        android:id="@+id/buttonSalvar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Salvar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+
+    <Button
+        android:id="@+id/buttonExcluir"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Excluir"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSalvar" />
 </androidx.constraintlayout.widget.ConstraintLayout>
