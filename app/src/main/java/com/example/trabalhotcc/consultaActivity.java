@@ -3,10 +3,16 @@ package com.example.trabalhotcc;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Camera;
+import android.graphics.Matrix;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -30,10 +36,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class consultaActivity extends AppCompatActivity {
+
+    ImageButton img;
+    private Bitmap bitmap;
+    public static final int REEQUEST_PERMISSONS_CODE = 128;
 
     // declarar objeto para manipular uma Pessoa. Inicialmente null para inclusão
     private Consulta consulta = null;
@@ -71,6 +84,7 @@ public class consultaActivity extends AppCompatActivity {
         btSalvar            = findViewById(R.id.btSalvar);
         btExcluir           = findViewById(R.id.btExcluir);
         imageButton         = findViewById(R.id.imageButton);
+        img                 = findViewById(R.id.botaoFoto);
 
 
         //instancia o adaptador
@@ -154,6 +168,13 @@ public class consultaActivity extends AppCompatActivity {
             it.removeExtra("idEdicao");
         }
 
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abrirCamera();
+            }
+        });
+
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,6 +256,63 @@ public class consultaActivity extends AppCompatActivity {
 
 
     }
+
+    public void abrirCamera(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, 123);
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        InputStream stream = null;
+        if(requestCode == 123 && resultCode == RESULT_OK){
+            try{
+                if(bitmap != null){
+                    bitmap.recycle();
+                }
+                stream = getContentResolver().openInputStream(data.getData());
+                bitmap = BitmapFactory.decodeStream(stream);
+                img.setImageBitmap(resizeImage(this, bitmap,700,600));
+            }catch (FileNotFoundException e){
+                e.printStackTrace();
+            } finally {
+                if(stream != null){
+                    try{
+                        stream.close();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    private static  Bitmap resizeImage(Context context, Bitmap bmpOriginal, float newWidth, float newHeight){
+        Bitmap novoBmp = null;
+        int w = bmpOriginal.getWidth();
+        int h = bmpOriginal.getHeight();
+
+        float densityFactor = context.getResources().getDisplayMetrics().density;
+        float novoW = newWidth * densityFactor;
+        float novoH = newHeight * densityFactor;
+
+        // calcula escala em percentual do tamanho original para o novo tamanho
+        float scalaW = novoW / w;
+        float scalaH = novoH / h;
+
+        // criando uma matrix para manipular imagem
+        Matrix matrix = new Matrix();
+
+        // definindo a proporção da escala para a matrix
+        matrix.postScale(scalaW,scalaH);
+
+        // criando o novo bitmap com o novo tamanho
+        novoBmp = Bitmap.createBitmap(bmpOriginal,0,0,w,h,matrix,true);
+        return novoBmp;
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
