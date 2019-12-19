@@ -11,13 +11,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Camera;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +40,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,7 +71,7 @@ public class consultaActivity extends AppCompatActivity {
     private Button btSalvar;
     private Button btExcluir;
     private ImageButton imageButton;
-
+    private String mCurrentPhotoPath;
     // declara o adaptador
     private ArrayAdapter<String> adaptadorSpinnerPais;
 
@@ -74,6 +79,11 @@ public class consultaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consulta);
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        builder.detectFileUriExposure();
 
         acessaBanco = new ConsultaDAO(getBaseContext());
         // vincula Componentes com Views da tela
@@ -258,32 +268,42 @@ public class consultaActivity extends AppCompatActivity {
     }
 
     public void abrirCamera(){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 123);
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                photoFile = File.createTempFile("PHOTOAPP", ".jpg", storageDir);
+                mCurrentPhotoPath = "file:" + photoFile.getAbsolutePath();
+            }
+            catch(IOException ex){
+                Toast.makeText(getApplicationContext(), "Erro ao tirar a foto", Toast.LENGTH_SHORT).show();
+            }
+
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REEQUEST_PERMISSONS_CODE);
+            }
+        }
 
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        InputStream stream = null;
-        if(requestCode == 123 && resultCode == RESULT_OK){
-            try{
-                if(bitmap != null){
-                    bitmap.recycle();
-                }
-                stream = getContentResolver().openInputStream(data.getData());
-                bitmap = BitmapFactory.decodeStream(stream);
-                img.setImageBitmap(resizeImage(this, bitmap,700,600));
-            }catch (FileNotFoundException e){
-                e.printStackTrace();
-            } finally {
-                if(stream != null){
-                    try{
-                        stream.close();
-                    }catch (IOException e){
-                        e.printStackTrace();
+
+        if(resultCode == RESULT_OK){
+
+            switch (requestCode){
+                case REEQUEST_PERMISSONS_CODE:
+
+                    try {
+                        ImageView imagem = (ImageView)findViewById(R.id.imagem);
+                        Bitmap bm1 = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(mCurrentPhotoPath)));
+                        imagem.setImageBitmap(bm1);
+                    }catch(FileNotFoundException fnex){
+                        Toast.makeText(getApplicationContext(), "Foto não encontrada!", Toast.LENGTH_LONG).show();
                     }
-                }
+
             }
         }
     }
