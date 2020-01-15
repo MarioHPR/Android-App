@@ -1,5 +1,10 @@
 package com.example.trabalhotcc.modelo;
 
+import android.graphics.Bitmap;
+import android.util.Base64;
+import android.util.Log;
+
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 
 public class Consulta implements Serializable {
@@ -45,6 +50,15 @@ public class Consulta implements Serializable {
 
     public String getLink_image() {
         return link_image;
+    }
+
+    public String bitmapString(Bitmap bmp){
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
     }
 
     public void setLink_image(String link_image) {

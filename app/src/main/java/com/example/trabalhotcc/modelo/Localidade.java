@@ -28,8 +28,11 @@ public class Localidade {
         return cep;
     }
 
-    public void setCep(String cep) {
+    public Boolean setCep(String cep) {
+
         this.cep = cep;
+
+        return true;
     }
 
     public String getBairro() {

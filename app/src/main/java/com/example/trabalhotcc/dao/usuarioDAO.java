@@ -45,21 +45,7 @@ public class usuarioDAO {
             NukeSSLCerts.nuke();
         }
     }
-    // arrumar
-    public void buscarUm(int id, Response.Listener<JSONObject> listener) {
-        String url = ProjetoUtils.ENDERECO_SERVIDOR + "/?id=" + id;
-        JsonObjectRequest requisicao = new JsonObjectRequest(
-                Request.Method.GET,
-                url,
-                null,
-                listener,
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {}
-                }
-        );
-        filaEnviadoraDeMensagens.add(requisicao);
-    }
+
         // arrumar
     public void excluir(int id) {
         String url = ProjetoUtils.ENDERECO_SERVIDOR + "/" + id;
@@ -111,7 +97,7 @@ public class usuarioDAO {
     }
 
     public void inserir(final Usuario usu) throws JSONException {
-        final String url = ProjetoUtils.ENDERECO_SERVIDOR + "cliente/";
+        final String url = ProjetoUtils.ENDERECO_SERVIDOR + "usuario/";
         JSONObject dados = new JSONObject();
         dados.put("nome", usu.getNome());
         dados.put("cpf", usu.getCpf());

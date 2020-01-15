@@ -45,6 +45,7 @@
         android:id="@+id/criarLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:onClick="criarUsuario"
         android:text="Criar login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

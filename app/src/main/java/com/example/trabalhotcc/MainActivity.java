@@ -47,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
         }
     }
+    public void criarUsuario(View v){
+        Intent i = new Intent(getBaseContext(), criarUsuario.class);
+        startActivity(i);
+    }
 
     public void logar(View v){
         final String log = login.getText().toString();
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         // Cria uma fila para envio de mensagens por Volley
         RequestQueue filaEnviadoraDeMensagens = Volley.newRequestQueue(this);
         //Dica: obter o IP abrir o terminal de comando cmd e escrever ipconfig. Procurar por IPv4
-        String urlServidor = "http://192.168.0.108:3000/login";// 192.168.0.108 em casa no if 31.6
+        String urlServidor = "http://192.168.0.106:3000/login";// 192.168.0.108 em casa no if 31.6
 
         // parâmetros para enviar por POST usando um Map
                 final Map<String, String> parametrosPOST = new HashMap<>();

@@ -1,9 +1,7 @@
 package com.example.trabalhotcc.dao;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -113,6 +111,7 @@ public class ConsultaDAO {
         dados.put("nome_medico", con.getNome_medico());
         dados.put("id_instituicao", con.getId_instituicao());
         dados.put("id_usuario", con.getId_usuario());
+        //dados.put("imagem", con.getLink_image());
         JsonObjectRequest requisicao = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -186,25 +185,5 @@ public class ConsultaDAO {
         );
         filaEnviadoraDeMensagens.add(requisicao);
     }
-    public static boolean isConnected(Context cont){
-        ConnectivityManager conmag = (ConnectivityManager)cont.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        if ( conmag != null ) {
-            conmag.getActiveNetworkInfo();
-
-            //Verifica internet pela WIFI
-            if (conmag.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected()) {
-                return true;
-            }
-
-            //Verifica se tem internet móvel
-            if (conmag.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 }
 

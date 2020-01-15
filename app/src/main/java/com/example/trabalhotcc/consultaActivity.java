@@ -2,15 +2,11 @@ package com.example.trabalhotcc;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Camera;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -43,7 +38,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,6 +66,7 @@ public class consultaActivity extends AppCompatActivity {
     private Button btExcluir;
     private ImageButton imageButton;
     private String mCurrentPhotoPath;
+    private Bitmap imgFoto;
     // declara o adaptador
     private ArrayAdapter<String> adaptadorSpinnerPais;
 
@@ -110,7 +105,7 @@ public class consultaActivity extends AppCompatActivity {
         // Cria uma fila para envio de mensagens por Volley
         RequestQueue filaEnviadoraDeMensagens = Volley.newRequestQueue(getBaseContext());
         //Dica: obter o IP abrir o terminal de comando cmd e escrever ipconfig. Procurar por IPv4
-        String url = "http://192.168.0.108:3000/instituicao/?id=1";// 192.168.0.108 em casa no if 31.6
+        String url = "http://192.168.0.106:3000/instituicao/?id_usuario=1";// 192.168.0.108 em casa no if 31.6
 
         // parâmetros para enviar por POST usando um Map
         final Map<String, String> parametrosPOST = new HashMap<>();
@@ -216,6 +211,12 @@ public class consultaActivity extends AppCompatActivity {
                 consulta.setPrescricao(prescricao);
                 consulta.setId_instituicao(spinnerPais.getSelectedItemPosition());
                 consulta.setId_usuario(1);// olhar depois
+                if(imgFoto != null){
+                    Log.d("OLHAR AQUI: ", "ENTROU AQUI SEM FRESCURA");
+                    String aux = consulta.bitmapString(imgFoto);
+                    consulta.setLink_image(aux);
+                }
+
                 if (idEdicao > 0) {
                     consulta.setId(idEdicao);
                     Toast.makeText(
@@ -300,38 +301,13 @@ public class consultaActivity extends AppCompatActivity {
                         ImageView imagem = (ImageView)findViewById(R.id.imagem);
                         Bitmap bm1 = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(mCurrentPhotoPath)));
                         imagem.setImageBitmap(bm1);
+                        imgFoto = bm1;
                     }catch(FileNotFoundException fnex){
                         Toast.makeText(getApplicationContext(), "Foto não encontrada!", Toast.LENGTH_LONG).show();
                     }
-
             }
         }
     }
-
-    private static  Bitmap resizeImage(Context context, Bitmap bmpOriginal, float newWidth, float newHeight){
-        Bitmap novoBmp = null;
-        int w = bmpOriginal.getWidth();
-        int h = bmpOriginal.getHeight();
-
-        float densityFactor = context.getResources().getDisplayMetrics().density;
-        float novoW = newWidth * densityFactor;
-        float novoH = newHeight * densityFactor;
-
-        // calcula escala em percentual do tamanho original para o novo tamanho
-        float scalaW = novoW / w;
-        float scalaH = novoH / h;
-
-        // criando uma matrix para manipular imagem
-        Matrix matrix = new Matrix();
-
-        // definindo a proporção da escala para a matrix
-        matrix.postScale(scalaW,scalaH);
-
-        // criando o novo bitmap com o novo tamanho
-        novoBmp = Bitmap.createBitmap(bmpOriginal,0,0,w,h,matrix,true);
-        return novoBmp;
-    }
-
 
     @Override
     public void onResume() {
